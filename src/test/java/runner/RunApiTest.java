@@ -13,6 +13,7 @@ import org.testng.annotations.DataProvider;
                 "json:target/cucumber-reports/api/cucumber.json"
         }
 )
+
 public class RunApiTest extends AbstractTestNGCucumberTests {
     @Override
     @DataProvider(parallel = true)
