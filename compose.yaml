@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      JENKINS_ADMIN_ID: admin
+      JENKINS_ADMIN_PASSWORD: admin_password # Change as needed
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  test-runner:
+    image: maven:3.9.4-eclipse-temurin-21
+    container_name: test-runner
+    working_dir: /workspace
+    volumes:
+      - ./app:/workspace/app
+      - ./src:/workspace/src
+      - ./pom.xml:/workspace/pom.xml
+    environment:
+      - MAVEN_OPTS=-DskipTests=false
+      - SELENIUM_REMOTE_URL=http://selenium-hub:4444/wd/hub
+    command: ["mvn", "test"]
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    depends_on:
+      - jenkins
+      - selenium-hub
+
+  selenium-hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+
+  chrome:
+    image: selenium/node-chrome:129.0
+    container_name: chrome
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=5
+
+  appium:
+    image: appium/appium
+    container_name: appium
+    ports:
+      - "4723:4723"
+    environment:
+      APPIUM_ARGS: "--relaxed-security"
+    depends_on:
+      - jenkins
+
+volumes:
+  jenkins_home:
