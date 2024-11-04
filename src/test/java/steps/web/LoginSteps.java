@@ -52,9 +52,4 @@ public class LoginSteps {
         DriverManager.getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("login-button")));
         Assert.assertTrue(DriverManager.getDriver().findElement(By.id("login-button")).isDisplayed(), "Login page is not displayed.");
     }
-
-    @After
-    public void tearDown() {
-        DriverManager.getDriver().quit();
-    }
 }
