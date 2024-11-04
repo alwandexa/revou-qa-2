@@ -9,35 +9,30 @@ services:
       - "50000:50000"
     environment:
       JENKINS_ADMIN_ID: admin
-      JENKINS_ADMIN_PASSWORD: admin_password # Change as needed
+      JENKINS_ADMIN_PASSWORD: admin_password
+      DOCKER_OPTS: "--dns 8.8.8.8 --dns 8.8.4.4"
+    dns:
+      - 8.8.8.8  
+      - 8.8.4.4  
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-
-  test-runner:
-    image: maven:3.9.4-eclipse-temurin-21
-    container_name: test-runner
-    working_dir: /workspace
-    volumes:
-      - ./app:/workspace/app
-      - ./src:/workspace/src
-      - ./pom.xml:/workspace/pom.xml
-    environment:
-      - MAVEN_OPTS=-DskipTests=false
-      - SELENIUM_REMOTE_URL=http://selenium-hub:4444/wd/hub
-    command: ["mvn", "test"]
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
-    depends_on:
-      - jenkins
-      - selenium-hub
+    networks: 
+      - test-network
 
   selenium-hub:
     image: selenium/hub:latest
     container_name: selenium-hub
     ports:
       - "4444:4444"
+      - "4442:4442"
+      - "4443:4443"
+    environment:
+      - GRID_MAX_SESSION=16
+      - GRID_BROWSER_TIMEOUT=300
+      - GRID_TIMEOUT=300
+    networks: 
+      - test-network
 
   chrome:
     image: selenium/node-chrome:129.0
@@ -50,6 +45,13 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
       - SE_NODE_OVERRIDE_MAX_SESSIONS=true
       - SE_NODE_MAX_SESSIONS=5
+      - SE_NODE_SESSION_TIMEOUT=300
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=1080
+      - SE_START_XVFB=false
+      - SE_VNC_NO_PASSWORD=1
+    networks:
+      - test-network
 
   appium:
     image: appium/appium
@@ -61,5 +63,29 @@ services:
     depends_on:
       - jenkins
 
+  android-emulator:
+    image: budtmo/docker-android:latest
+    container_name: android-emulator
+    privileged: true
+    ports:
+      - "6080:6080"
+      - "5554:5554"
+      - "5555:5555"
+    environment:
+      - DEVICE=Pixel_3a_API_30
+      - ANDROID_PLATFORM=android-30
+      - EMULATOR_ARGS=-no-boot-anim -no-audio -gpu swiftshader_indirect -no-snapshot
+      - APPIUM=true
+      - DOCKER_OPTS=--privileged
+    volumes:
+      - /dev/shm:/dev/shm
+      - ./apps:/root/apps
+    networks:
+      - test-network
+      
 volumes:
   jenkins_home:
+
+networks:
+  test-network:
+    driver: bridge
