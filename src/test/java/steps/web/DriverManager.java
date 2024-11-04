@@ -14,7 +14,7 @@ public class DriverManager {
 
     private static WebDriver driver;
     private static WebDriverWait wait;
-    private static final String SELENIUM_GRID_URL = "http://localhost:4444/wd/hub";
+    private static final String SELENIUM_GRID_URL = "http://172.19.0.2:4444/wd/hub";
     private static final String ENV = System.getProperty("ENV", "local"); // Default to local if not specified
 
     public static void initializeDriver() {
