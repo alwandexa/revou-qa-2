@@ -15,20 +15,28 @@ pipeline {
         
         stage('Setup App Directory') {
             steps {
-                sh '''
-                    if ! command -v wget &> /dev/null; then
-                        apt-get update && apt-get install -y wget
-                    fi
-
-                    mkdir -p apps
-                    wget https://github.com/saucelabs/my-demo-app-rn/releases/download/v1.3.0/Android-MyDemoAppRN.1.3.0.build-244.apk -O apps/sauce-demo.apk
-                '''
+                script {
+                    // Create directory with proper permissions
+                    sh 'mkdir -p ${WORKSPACE}/apps'
+                    
+                    // Download app using curl (which is usually pre-installed)
+                    sh '''
+                        if command -v curl > /dev/null; then
+                            curl -L -o ${WORKSPACE}/apps/sauce-demo.apk https://github.com/saucelabs/my-demo-app-rn/releases/download/v1.3.0/Android-MyDemoAppRN.1.3.0.build-244.apk
+                        else
+                            echo "curl is not installed. Please install curl in your Jenkins container."
+                            exit 1
+                        fi
+                    '''
+                    
+                    // Ensure proper permissions
+                    sh 'chmod -R 777 ${WORKSPACE}/apps'
+                }
             }
         }
 
         stage('Wait for Emulator') {
             steps {
-                // Wait for emulator to be ready (timeout after 2 minutes)
                 sh '''
                     timeout 120 bash -c '
                     until docker exec android-emulator adb shell getprop sys.boot_completed 2>/dev/null | grep -m 1 "1"; do
@@ -43,11 +51,11 @@ pipeline {
         stage('Install App') {
             steps {
                 sh '''
-                    # Ensure ADB server is running
-                    docker exec android-emulator adb start-server
+                    # Copy app to emulator
+                    docker cp ${WORKSPACE}/apps/sauce-demo.apk android-emulator:/root/sauce-demo.apk
                     
                     # Install the app
-                    docker exec android-emulator adb install -r /root/apps/sauce-demo.apk
+                    docker exec android-emulator adb install -r /root/sauce-demo.apk
                     
                     # Verify installation
                     docker exec android-emulator adb shell pm list packages | grep saucelabs
