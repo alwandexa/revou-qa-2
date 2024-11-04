@@ -1,11 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        maven 'Maven 3.9.5'
-        jdk 'JDK 17'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
@@ -25,7 +20,6 @@ pipeline {
             }
             post {
                 always {
-                    // Publish Cucumber HTML reports
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
@@ -36,7 +30,6 @@ pipeline {
                         reportTitles: ''
                     ])
                     
-                    // Publish TestNG reports
                     step([
                         $class: 'Publisher',
                         reportFilenamePattern: '**/testng-results.xml'
@@ -48,7 +41,6 @@ pipeline {
     
     post {
         always {
-            // Clean workspace after build
             cleanWs()
         }
         success {
@@ -58,4 +50,4 @@ pipeline {
             echo 'Test execution failed!'
         }
     }
-} 
+}
