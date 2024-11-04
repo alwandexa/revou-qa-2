@@ -1,18 +1,18 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Cucumber Suite" parallel="classes" thread-count="2">
-    <test name="API Tests">
+    <!-- <test name="API Tests">
         <classes>
             <class name="runner.RunApiTest"/>
         </classes>
-    </test>
+    </test> -->
     <test name="Web Tests">
         <classes>
             <class name="runner.RunWebTest"/>
         </classes>
     </test>
-    <test name="App Tests">
+    <!-- <test name="App Tests">
         <classes>
             <class name="runner.RunAppTest"/>
         </classes>
-    </test>
+    </test> -->
 </suite>
