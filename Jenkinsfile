@@ -16,6 +16,10 @@ pipeline {
         stage('Setup App Directory') {
             steps {
                 sh '''
+                    if ! command -v wget &> /dev/null; then
+                        apt-get update && apt-get install -y wget
+                    fi
+
                     mkdir -p apps
                     wget https://github.com/saucelabs/my-demo-app-rn/releases/download/v1.3.0/Android-MyDemoAppRN.1.3.0.build-244.apk -O apps/sauce-demo.apk
                 '''
