@@ -29,29 +29,30 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        # Check if emulator container is running
-                        if ! docker ps | grep android-emulator; then
-                            echo "Android emulator container is not running!"
-                            exit 1
-                        fi
+                        # Print ADB version and initial status
+                        adb version
+                        adb devices
+                        
+                        # Kill any existing ADB server
+                        adb kill-server
+                        
+                        # Start ADB server
+                        adb start-server
+                        
+                        echo "Attempting to connect to android-emulator:5555..."
                         
                         # Wait for emulator to boot (timeout after 5 minutes)
                         timeout 300 bash -c '
-                        until docker exec android-emulator adb shell getprop sys.boot_completed 2>/dev/null | grep -m 1 "1"; do
+                        until adb connect android-emulator:5555 && adb shell getprop sys.boot_completed 2>/dev/null | grep -m 1 "1"; do
                             echo "Waiting for emulator to start..."
-                            # Print emulator status
-                            docker exec android-emulator adb devices
-                            docker exec android-emulator adb shell getprop init.svc.bootanim || true
+                            adb devices
+                            adb shell getprop init.svc.bootanim || true
                             sleep 10
                         done
                         '
                         
-                        # Additional wait to ensure stability
-                        sleep 30
-                        
-                        # Print final status
-                        docker exec android-emulator adb devices
-                        docker exec android-emulator adb shell getprop init.svc.bootanim
+                        echo "Emulator is ready!"
+                        adb devices
                     '''
                 }
             }
@@ -62,14 +63,13 @@ pipeline {
                 script {
                     sh '''
                         # Ensure ADB server is running
-                        docker exec android-emulator adb start-server
+                        adb start-server
                         
-                        # Copy and install app
-                        docker cp ${WORKSPACE}/apps/sauce-demo.apk android-emulator:/root/sauce-demo.apk
-                        docker exec android-emulator adb install -r /root/sauce-demo.apk
+                        # Install app directly
+                        adb -s android-emulator:5555 install -r ${WORKSPACE}/apps/sauce-demo.apk
                         
                         # Verify installation
-                        docker exec android-emulator adb shell pm list packages | grep saucelabs
+                        adb shell pm list packages | grep saucelabs
                     '''
                 }
             }

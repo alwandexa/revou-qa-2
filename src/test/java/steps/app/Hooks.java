@@ -15,14 +15,14 @@ public class Hooks {
     @Before
     public void setUp() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("appium:deviceName", "emulator-5554");
+        capabilities.setCapability("appium:deviceName", "android-emulator");  // Changed from emulator-5554
         capabilities.setCapability("appium:platformVersion", "15");
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("appium:automationName", "UiAutomator2");
         capabilities.setCapability("appium:appPackage", "com.saucelabs.mydemoapp.rn");
         capabilities.setCapability("appium:appActivity", "com.saucelabs.mydemoapp.rn.MainActivity");
 
-        driver = new AndroidDriver(new URL("http://appium:4723"), capabilities);
+        driver = new AndroidDriver(new URL("http://appium:4723"), capabilities);  // Using container name 'appium'
     }
 
     @After
