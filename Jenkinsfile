@@ -21,7 +21,7 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                sh 'mvn test -DENV=grid'
+                sh 'mvn test -DENV=container'
             }
             post {
                 always {
