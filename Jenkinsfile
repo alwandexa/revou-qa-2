@@ -32,15 +32,7 @@ pipeline {
                         keepAll: true,
                         reportDir: 'target/cucumber-reports/api',
                         reportFiles: 'cucumber.html',
-                        reportName: 'API Test Report',
-                        reportTitles: '',
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
-                        allowMissing: false,
-                        includes: '**/*',
-                        escapeUnderscores: true,
-                        useWrapperFileDirectly: true
+                        reportName: 'API Test Report'
                     ])
                     
                     // Web Test Report
@@ -50,15 +42,7 @@ pipeline {
                         keepAll: true,
                         reportDir: 'target/cucumber-reports/web',
                         reportFiles: 'cucumber.html',
-                        reportName: 'Web Test Report',
-                        reportTitles: '',
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
-                        allowMissing: false,
-                        includes: '**/*',
-                        escapeUnderscores: true,
-                        useWrapperFileDirectly: true
+                        reportName: 'Web Test Report'
                     ])
                 }
             }
