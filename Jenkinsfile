@@ -41,8 +41,7 @@ pipeline {
                         includes: '**/*',
                         escapeUnderscores: true,
                         includeSummary: true,
-                        useWrapperFileDirectly: true,
-                        sanitize: false
+                        useWrapperFileDirectly: true
                     ])
                     
                     // Web Test Report
@@ -61,8 +60,7 @@ pipeline {
                         includes: '**/*',
                         escapeUnderscores: true,
                         includeSummary: true,
-                        useWrapperFileDirectly: true,
-                        sanitize: false
+                        useWrapperFileDirectly: true
                     ])
                 }
             }
