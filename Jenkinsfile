@@ -25,7 +25,6 @@ pipeline {
             }
             post {
                 always {
-                    // API Test Report
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
@@ -33,15 +32,9 @@ pipeline {
                         reportDir: 'target/cucumber-reports/api',
                         reportFiles: 'index.html',
                         reportName: 'API Test Report',
-                        reportTitles: '',
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        allowScripts: true,
-                        sandbox: false
+                        reportTitles: ''
                     ])
                     
-                    // Web Test Report
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
@@ -49,12 +42,7 @@ pipeline {
                         reportDir: 'target/cucumber-reports/web',
                         reportFiles: 'index.html',
                         reportName: 'Web Test Report',
-                        reportTitles: '',
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        allowScripts: true,
-                        sandbox: false
+                        reportTitles: ''
                     ])
                 }
             }
