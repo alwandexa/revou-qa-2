@@ -40,7 +40,6 @@ pipeline {
                         allowMissing: false,
                         includes: '**/*',
                         escapeUnderscores: true,
-                        includeSummary: true,
                         useWrapperFileDirectly: true
                     ])
                     
@@ -59,7 +58,6 @@ pipeline {
                         allowMissing: false,
                         includes: '**/*',
                         escapeUnderscores: true,
-                        includeSummary: true,
                         useWrapperFileDirectly: true
                     ])
                 }
