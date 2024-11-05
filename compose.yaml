@@ -17,6 +17,8 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks: 
       - test-network
 
@@ -53,36 +55,6 @@ services:
     networks:
       - test-network
 
-  appium:
-    image: appium/appium
-    container_name: appium
-    ports:
-      - "4723:4723"
-    environment:
-      APPIUM_ARGS: "--relaxed-security"
-    depends_on:
-      - jenkins
-
-  android-emulator:
-    image: budtmo/docker-android:latest
-    container_name: android-emulator
-    privileged: true
-    ports:
-      - "6080:6080"
-      - "5554:5554"
-      - "5555:5555"
-    environment:
-      - DEVICE=Pixel_3a_API_30
-      - ANDROID_PLATFORM=android-30
-      - EMULATOR_ARGS=-no-boot-anim -no-audio -gpu swiftshader_indirect -no-snapshot
-      - APPIUM=true
-      - DOCKER_OPTS=--privileged
-    volumes:
-      - /dev/shm:/dev/shm
-      - ./apps:/root/apps
-    networks:
-      - test-network
-      
 volumes:
   jenkins_home:
 

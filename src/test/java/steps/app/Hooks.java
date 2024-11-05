@@ -22,7 +22,7 @@ public class Hooks {
         capabilities.setCapability("appium:appPackage", "com.saucelabs.mydemoapp.rn");
         capabilities.setCapability("appium:appActivity", "com.saucelabs.mydemoapp.rn.MainActivity");
 
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), capabilities);
+        driver = new AndroidDriver(new URL("http://host.docker.internal:4723"), capabilities);
     }
 
     @After
