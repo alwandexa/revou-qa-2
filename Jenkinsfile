@@ -32,7 +32,13 @@ pipeline {
                         keepAll: true,
                         reportDir: 'target/cucumber-reports/api',
                         reportFiles: 'index.html',
-                        reportName: 'API Test Report'
+                        reportName: 'API Test Report',
+                        reportTitles: '',
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        allowScripts: true,
+                        sandbox: false
                     ])
                     
                     // Web Test Report
@@ -42,17 +48,14 @@ pipeline {
                         keepAll: true,
                         reportDir: 'target/cucumber-reports/web',
                         reportFiles: 'index.html',
-                        reportName: 'Web Test Report'
+                        reportName: 'Web Test Report',
+                        reportTitles: '',
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        allowScripts: true,
+                        sandbox: false
                     ])
-
-                    // publishHTML([
-                    //     allowMissing: false,
-                    //     alwaysLinkToLastBuild: true,
-                    //     keepAll: true,
-                    //     reportDir: 'target/site',
-                    //     reportFiles: 'index.html',
-                    //     reportName: 'Project Site Report'
-                    // ])
                 }
             }
         }
