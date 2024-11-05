@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
         glue = "steps.api",
         plugin = {
                 "pretty",
-                "html:target/cucumber-reports/api/cucumber.html",
+                "html:target/cucumber-reports/api/index.html",
                 "json:target/cucumber-reports/api/cucumber.json"
         }
 )

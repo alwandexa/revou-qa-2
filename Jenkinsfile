@@ -21,7 +21,7 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                sh 'mvn site -DENV=grid'
+                sh 'mvn test -DENV=grid'
             }
             post {
                 always {
@@ -31,7 +31,7 @@ pipeline {
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'target/cucumber-reports/api',
-                        reportFiles: 'cucumber.html',
+                        reportFiles: 'index.html',
                         reportName: 'API Test Report'
                     ])
                     
@@ -41,18 +41,18 @@ pipeline {
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'target/cucumber-reports/web',
-                        reportFiles: 'cucumber.html',
+                        reportFiles: 'index.html',
                         reportName: 'Web Test Report'
                     ])
 
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'target/site',
-                        reportFiles: 'index.html',
-                        reportName: 'Project Site Report'
-                    ])
+                    // publishHTML([
+                    //     allowMissing: false,
+                    //     alwaysLinkToLastBuild: true,
+                    //     keepAll: true,
+                    //     reportDir: 'target/site',
+                    //     reportFiles: 'index.html',
+                    //     reportName: 'Project Site Report'
+                    // ])
                 }
             }
         }
