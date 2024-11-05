@@ -23,11 +23,9 @@ pipeline {
             steps {
                 sh 'mvn test -DENV=grid'
             }
-            steps {
-                sh 'mvn site'
-            }
             post {
                 always {
+                    sh 'mvn site'
                     // API Test Report
                     publishHTML([
                         allowMissing: false,
