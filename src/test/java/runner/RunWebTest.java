@@ -8,8 +8,8 @@ import io.cucumber.testng.CucumberOptions;
         glue = "steps.web",
         plugin = {
                 "pretty",
-                "html:target/cucumber-reports/api/cucumber.html",
-                "json:target/cucumber-reports/api/cucumber.json"
+                "html:target/cucumber-reports/web/cucumber.html",
+                "json:target/cucumber-reports/web/cucumber.json"
         }
 )
 public class RunWebTest extends AbstractTestNGCucumberTests {

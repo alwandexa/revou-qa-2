@@ -25,19 +25,26 @@ pipeline {
             }
             post {
                 always {
+                    // API Test Report
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'target/cucumber-reports',
-                        reportFiles: 'cucumber-pretty.html',
-                        reportName: 'Cucumber Report',
+                        reportDir: 'target/cucumber-reports/api',
+                        reportFiles: 'cucumber.html',
+                        reportName: 'API Test Report',
                         reportTitles: ''
                     ])
                     
-                    step([
-                        $class: 'Publisher',
-                        reportFilenamePattern: '**/testng-results.xml'
+                    // Web Test Report
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/cucumber-reports/web',
+                        reportFiles: 'cucumber.html',
+                        reportName: 'Web Test Report',
+                        reportTitles: ''
                     ])
                 }
             }
@@ -50,14 +57,6 @@ pipeline {
         }
         success {
             echo 'Tests executed successfully!'
-        }
-        failure {
-            echo 'Test execution failed!'
-            sh '''
-                # Print emulator logs for debugging
-                docker logs android-emulator
-                docker exec android-emulator adb logcat -d
-            '''
         }
     }
 }

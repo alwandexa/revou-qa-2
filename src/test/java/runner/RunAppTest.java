@@ -8,8 +8,8 @@ import io.cucumber.testng.CucumberOptions;
         glue = "steps.app",
         plugin = {
                 "pretty",
-                "html:target/cucumber-reports/api/cucumber.html",
-                "json:target/cucumber-reports/api/cucumber.json"
+                "html:target/cucumber-reports/app/cucumber.html",
+                "json:target/cucumber-reports/app/cucumber.json"
         }
 )
 public class RunAppTest extends AbstractTestNGCucumberTests { }
