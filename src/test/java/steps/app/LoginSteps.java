@@ -23,12 +23,6 @@ public class LoginSteps {
     AndroidDriver driver = Hooks.getDriver();
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    @Before
-    public void resetApp() {
-        // Reset the app before each test to ensure a clean state
-        driver.resetInputState();
-    }
-
     @Given("I am on the login screen")
     public void i_am_on_the_login_screen() {
         try {
