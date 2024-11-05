@@ -21,11 +21,10 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                sh 'mvn test -DENV=grid'
+                sh 'mvn site -DENV=grid'
             }
             post {
                 always {
-                    sh 'mvn site'
                     // API Test Report
                     publishHTML([
                         allowMissing: false,
