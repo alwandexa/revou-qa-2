@@ -19,3 +19,31 @@ Feature: SauceDemo Checkout Functionality
     When I navigate to the cart page without adding any items
     And I attempt to proceed to checkout
     Then I should see an error message or be unable to proceed with an empty cart
+
+  Scenario Outline: Validate checkout information form
+    Given I am on the checkout information page
+    When I enter checkout information:
+      | firstName   | lastName   | postalCode   |
+      | <firstName> | <lastName> | <postalCode> |
+    Then I should see "<expected_result>"
+
+    Examples:
+      | firstName | lastName | postalCode | expected_result        |
+      | John      | Doe      | 12345      | checkout overview     |
+      |           | Doe      | 12345      | First Name is required   |
+      | John      |          | 12345      | Last Name is required    |
+      | John      | Doe      |            | Postal Code is required  |
+
+  Scenario: Verify order summary before completion
+    Given I have added multiple products to the cart
+    And I am on the checkout information page
+    When I fill out my personal information and continue
+    Then I should see the correct:
+      | Item Total    |
+      | Tax           |
+      | Total Amount  |
+
+  Scenario: Cancel checkout process
+    Given I am on the checkout information page
+    When I click the cancel button
+    Then I should be returned to the cart page

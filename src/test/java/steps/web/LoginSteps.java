@@ -5,7 +5,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 public class LoginSteps {
@@ -51,5 +53,58 @@ public class LoginSteps {
     public void i_should_see_the_login_page() {
         DriverManager.getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("login-button")));
         Assert.assertTrue(DriverManager.getDriver().findElement(By.id("login-button")).isDisplayed(), "Login page is not displayed.");
+    }
+
+    @When("I enter username {string} and password {string}")
+    public void i_enter_username_and_password(String username, String password) {
+        DriverManager.getDriver().findElement(By.id("user-name")).sendKeys(username);
+        DriverManager.getDriver().findElement(By.id("password")).sendKeys(password);
+    }
+
+    @When("I login again as {string}")
+    public void i_login_again_as(String username) {
+        WebDriver driver = DriverManager.getDriver();
+        driver.findElement(By.id("user-name")).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+        
+        // Wait for products page to load
+        DriverManager.getWait().until(ExpectedConditions.visibilityOfElementLocated(By.className("inventory_list")));
+    }
+
+    @Then("I should see {string}")
+    public void i_should_see_result(String expectedResult) {
+        WebDriver driver = DriverManager.getDriver();
+        WebDriverWait wait = DriverManager.getWait();
+        
+        switch (expectedResult) {
+            case "products page":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("inventory_list")));
+                Assert.assertTrue(driver.findElement(By.className("inventory_list")).isDisplayed());
+                break;
+                
+            case "locked out error message":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='error']")));
+                String errorText = driver.findElement(By.cssSelector("[data-test='error']")).getText();
+                Assert.assertTrue(errorText.contains("Sorry, this user has been locked out"));
+                break;
+                
+            case "login error message":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='error']")));
+                String loginError = driver.findElement(By.cssSelector("[data-test='error']")).getText();
+                Assert.assertTrue(loginError.contains("Username and password do not match"));
+                break;
+
+            case "checkout overview":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("checkout_summary_container")));
+                Assert.assertTrue(driver.findElement(By.className("checkout_summary_container")).isDisplayed());
+                break;
+            
+            default :
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='error']")));
+                String message = driver.findElement(By.cssSelector("[data-test='error']")).getText();
+                Assert.assertTrue(message.contains(expectedResult));
+                break;
+        }
     }
 }
