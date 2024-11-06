@@ -18,6 +18,35 @@ public class GetBookingByIdSteps {
         this.testContext = testContext;
     }
 
+    @Given("I have access to the booking service")
+    public void i_have_access_to_the_booking_service() {
+        RequestSpecification request = RestAssured.given();
+        testContext.setRequest(request);
+    }
+
+    @Given("I am authenticated with valid basic auth credentials")
+    public void i_am_authenticated_with_valid_basic_auth_credentials() {
+        RequestSpecification request = testContext.getRequest()
+            .auth()
+            .basic("admin", "password123"); // Replace with actual credentials
+        testContext.setRequest(request);
+    }
+
+    @Given("I am authenticated with invalid basic auth credentials")
+    public void i_am_authenticated_with_invalid_basic_auth_credentials() {
+        RequestSpecification request = testContext.getRequest()
+            .auth()
+            .basic("invalid", "wrongpassword");
+        testContext.setRequest(request);
+    }
+
+    @Given("I do not provide any authentication credentials")
+    public void i_do_not_provide_any_authentication_credentials() {
+        // No authentication needed - using the default request specification
+        RequestSpecification request = RestAssured.given();
+        testContext.setRequest(request);
+    }
+
     @When("I send a GET request to the {string} endpoint with booking ID {int}")
     public void i_send_get_request_to_endpoint_with_booking_id(String endpoint, int id) {
         // Send GET request to the specified endpoint with the booking ID

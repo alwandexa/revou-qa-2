@@ -2,12 +2,16 @@ package steps.api;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestContext {
     private Response response;
     private RequestSpecification request;
 
     private String bookingId;
+
+    private Map<String, Object> additionalData = new HashMap<>();
 
     public Response getResponse() {
         return response;
@@ -31,5 +35,13 @@ public class TestContext {
 
     public void setBookingId(String bookingId) {
         this.bookingId = bookingId;
+    }
+
+    public void setAdditionalData(String key, Object value) {
+        additionalData.put(key, value);
+    }
+
+    public Object getAdditionalData(String key) {
+        return additionalData.get(key);
     }
 }

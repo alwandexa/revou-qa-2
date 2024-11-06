@@ -18,12 +18,6 @@ public class GetBookingSteps {
         this.testContext = testContext;
     }
 
-    @Given("I have access to the booking service")
-    public void i_have_access_to_the_booking_service() {
-        request = RestAssured.given().baseUri("https://restful-booker.herokuapp.com");
-        testContext.setRequest(request);
-    }
-
     @When("I send a GET request to the {string} endpoint")
     public void i_send_get_request_to_endpoint(String endpoint) {
         Response response = testContext.getRequest().when().get(endpoint);

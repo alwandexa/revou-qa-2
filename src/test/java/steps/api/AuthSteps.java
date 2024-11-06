@@ -18,6 +18,24 @@ public class AuthSteps {
         this.testContext = testContext;
     }
 
+    @Given("I have credentials with SQL injection patterns")
+    public void i_have_credentials_with_sql_injection_patterns() {
+        request = given().contentType("application/json").body("{ \"username\": \"admin' OR '1'='1\", \"password\": \"password123\" }");
+        testContext.setRequest(request);
+    }
+    
+    @Given("I have credentials with only whitespace")
+    public void i_have_credentials_with_only_whitespace() {
+        request = given().contentType("application/json").body("{ \"username\": \" \", \"password\": \" \", }");
+        testContext.setRequest(request);
+    }
+
+    @Given("I have missing username and password")
+    public void i_have_missing_username_and_password() {
+        request = given().contentType("application/json").body("{}");
+        testContext.setRequest(request);
+    }
+
     @Given("I have valid user credentials")
     public void i_have_valid_user_credentials() {
         // Set up the request with valid user credentials
