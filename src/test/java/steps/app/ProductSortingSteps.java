@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ProductSortingSteps {
 
     AndroidDriver driver = Hooks.getDriver();
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     @When("I tap on the {string}")
     public void i_tap_on_the_sort_button(String button) {

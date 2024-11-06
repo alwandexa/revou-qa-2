@@ -1,6 +1,7 @@
 package steps.app;
 
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumBy;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -15,12 +16,12 @@ import java.util.List;
 public class ProductListNavigationSteps {
 
     AndroidDriver driver = Hooks.getDriver();
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     @When("I scroll down the product list")
     public void i_scroll_down_the_product_list() {
-        WebElement listElement = driver.findElement(By.xpath("//android.view.ViewGroup[@content-desc='store item']"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", listElement);
+        driver.findElement(AppiumBy.androidUIAutomator(
+            "new UiScrollable(new UiSelector().scrollable(true)).scrollForward()"));
     }
 
     @Then("a list of products should be displayed")
@@ -32,10 +33,26 @@ public class ProductListNavigationSteps {
     @Then("each product should show a name, price, and review stars")
     public void each_product_should_show_name_price_and_review_stars() {
         List<WebElement> products = driver.findElements(By.xpath("//android.view.ViewGroup[@content-desc='store item']"));
+        
         for (WebElement product : products) {
-            Assert.assertTrue(product.findElement(By.id("store item text")).isDisplayed(), "Product name is not displayed");
-            Assert.assertTrue(product.findElement(By.id("store item price")).isDisplayed(), "Product price is not displayed");
-            Assert.assertTrue(product.findElements(By.xpath(".//android.view.ViewGroup[contains(@content-desc, 'review star')]")).size() > 0, "Review stars are not displayed");
+            // Using content-desc instead of id for product elements
+            Assert.assertTrue(
+                product.findElement(By.xpath(".//android.widget.TextView[@content-desc='store item text']"))
+                .isDisplayed(), 
+                "Product name is not displayed"
+            );
+            
+            Assert.assertTrue(
+                product.findElement(By.xpath(".//android.widget.TextView[@content-desc='store item price']"))
+                .isDisplayed(), 
+                "Product price is not displayed"
+            );
+            
+            Assert.assertTrue(
+                product.findElements(By.xpath(".//android.view.ViewGroup[@content-desc='review star 1']"))
+                .size() > 0, 
+                "Review stars are not displayed"
+            );
         }
     }
 }

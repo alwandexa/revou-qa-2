@@ -11,6 +11,9 @@ import java.net.URL;
 public class Hooks {
 
     static AndroidDriver driver;
+    private static final String ENV = System.getProperty("ENV", "local");
+    private static final String LOCAL_GRID_URL = "http://localhost:4723";
+    private static final String SELENIUM_GRID_URL = "http://host.docker.internal:4723";
 
     @Before
     public void setUp() throws MalformedURLException {
@@ -22,7 +25,7 @@ public class Hooks {
         capabilities.setCapability("appium:appPackage", "com.saucelabs.mydemoapp.rn");
         capabilities.setCapability("appium:appActivity", "com.saucelabs.mydemoapp.rn.MainActivity");
 
-        driver = new AndroidDriver(new URL("http://host.docker.internal:4723"), capabilities);
+        driver = new AndroidDriver(new URL(ENV.equalsIgnoreCase("local") ? LOCAL_GRID_URL : SELENIUM_GRID_URL), capabilities);
     }
 
     @After

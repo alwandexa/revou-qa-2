@@ -17,11 +17,11 @@ import java.util.List;
 public class ShoppingCartSteps {
 
     AndroidDriver driver = Hooks.getDriver();
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     @Given("I have added items to my shopping cart")
     public void i_have_added_items_to_my_shopping_cart() {
-        WebElement product = driver.findElement(By.xpath("//android.view.ViewGroup[@content-desc='store item']"));
+        WebElement product = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.view.ViewGroup[@content-desc='store item']")));
         product.click();
         WebElement addToCartButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.view.ViewGroup[@content-desc=\"Add To Cart button\"]")));
         addToCartButton.click();

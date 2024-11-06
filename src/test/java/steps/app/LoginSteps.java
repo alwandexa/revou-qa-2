@@ -21,7 +21,7 @@ import java.time.Duration;
 public class LoginSteps {
 
     AndroidDriver driver = Hooks.getDriver();
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
     @Given("I am on the login screen")
     public void i_am_on_the_login_screen() {
@@ -69,21 +69,24 @@ public class LoginSteps {
 
     @Then("I should see an error message {string}")
     public void i_should_see_an_error_message(String expectedMessage) {
-        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.view.ViewGroup[@content-desc='generic-error-message']")));
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//android.view.ViewGroup[@content-desc='generic-error-message']//android.widget.TextView")));
         String actualMessage = errorMessage.getText();
         Assert.assertEquals(actualMessage, expectedMessage, "Error message did not match");
     }
 
     @Then("I should see a username error message {string}")
     public void i_should_see_a_username_error_message(String expectedMessage) {
-        WebElement usernameErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.view.ViewGroup[@content-desc='Username-error-message']")));
+        WebElement usernameErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//android.view.ViewGroup[@content-desc='Username-error-message']//android.widget.TextView")));
         String actualMessage = usernameErrorMessage.getText();
         Assert.assertEquals(actualMessage, expectedMessage, "Username error message did not match");
     }
 
     @Then("I should see a password error message {string}")
     public void i_should_see_a_password_error_message(String expectedMessage) {
-        WebElement passwordErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.view.ViewGroup[@content-desc='Password-error-message']")));
+        WebElement passwordErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//android.view.ViewGroup[@content-desc='Password-error-message']//android.widget.TextView")));
         String actualMessage = passwordErrorMessage.getText();
         Assert.assertEquals(actualMessage, expectedMessage, "Password error message did not match");
     }
