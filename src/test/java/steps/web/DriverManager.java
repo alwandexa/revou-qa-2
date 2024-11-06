@@ -64,8 +64,8 @@ public class DriverManager {
                 }
                 
                 // Initialize wait after driver is created
-                wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+                wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
                 
             } catch (Exception e) {
                 String errorMsg = String.format(

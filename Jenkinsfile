@@ -44,6 +44,16 @@ pipeline {
                         reportName: 'Web Test Report',
                         reportTitles: ''
                     ])
+
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/cucumber-reports/app',
+                        reportFiles: 'index.html',
+                        reportName: 'App Test Report',
+                        reportTitles: ''
+                    ])
                 }
             }
         }

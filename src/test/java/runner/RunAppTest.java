@@ -8,7 +8,7 @@ import io.cucumber.testng.CucumberOptions;
         glue = "steps.app",
         plugin = {
                 "pretty",
-                "html:target/cucumber-reports/app/cucumber.html",
+                "html:target/cucumber-reports/app/index.html",
                 "json:target/cucumber-reports/app/cucumber.json"
         }
 )

@@ -10,9 +10,9 @@
             <class name="runner.RunWebTest"/>
         </classes>
     </test>
-    <!-- <test name="App Tests">
+    <test name="App Tests">
         <classes>
             <class name="runner.RunAppTest"/>
         </classes>
-    </test> -->
+    </test>
 </suite>
